@@ -1,0 +1,8 @@
+# Netlify build: the validated data files are already in client/public/data, so no Python is needed here.
+# The build runs the data tests first, so a wrong number never goes live.
+[build]
+  command = "npm --prefix client ci && npm --prefix client test && npm --prefix client run build"
+  publish = "client/dist"
+
+[build.environment]
+  NODE_VERSION = "22"

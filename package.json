@@ -1,0 +1,15 @@
+{
+  "name": "iri-method-explorer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive validation explorer for ten ways of scoring the Internet Resilience Index.",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "setup": "npm --prefix client install",
+    "data": "python pipeline/export_data.py && python pipeline/export_extras.py && python pipeline/check_parity.py",
+    "dev": "npm --prefix client run dev",
+    "test": "npm --prefix client test",
+    "build": "npm --prefix client run build",
+    "preview": "npm --prefix client run preview"
+  }
+}

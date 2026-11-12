@@ -1,0 +1,2 @@
+# Single-page app: every path serves the explorer (its state lives in the address-bar hash)
+/*  /index.html  200

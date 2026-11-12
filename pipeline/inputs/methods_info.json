@@ -1,0 +1,95 @@
+{
+  "cur": {
+    "name": "Current IRI", "short": "Current IRI", "ruler": "moving", "verdict": "Replace", "tone": "bad",
+    "tagline": "Scales every indicator between this quarter's best and worst country.",
+    "how": "Each quarter, extreme values are clipped, then every indicator is scaled from 1 to 100 between that quarter's lowest and highest country and combined with the IRI weights.",
+    "formula": "score = 1 + 99 × (x − lowest) ÷ (highest − lowest), recalculated every quarter",
+    "use": "Good for ranking countries within one quarter. Not for tracking one country over time.",
+    "pros": ["Matches ISOC's published scores", "Familiar scale", "Ranks countries well within one quarter"],
+    "cons": ["A country's score moves when other countries move", "About 1 in 5 yearly directions flips under small noise", "Outlier caps give the same score to up to 33 countries"]
+  },
+  "dyn": {
+    "name": "Dynamic min-max", "short": "Dynamic min-max", "ruler": "moving", "verdict": "Not suitable", "tone": "bad",
+    "tagline": "The current IRI's idea without the outlier clipping.",
+    "how": "Each quarter, every indicator is scaled from 0 to 100 between that quarter's lowest and highest country. There is no outlier treatment.",
+    "formula": "score = 100 × (x − lowest) ÷ (highest − lowest), recalculated every quarter",
+    "use": "A reference point: it shows what the moving ruler does without any clipping.",
+    "pros": ["Simple to explain"],
+    "cons": ["Every other country moves when one country improves", "One extreme value can set the whole scale"]
+  },
+  "mdtf": {
+    "name": "Moving distance to frontier", "short": "Moving distance to frontier", "ruler": "moving", "verdict": "Not suitable", "tone": "bad",
+    "tagline": "A fixed floor, but the top of the scale follows the best country.",
+    "how": "The floor is fixed (the trimmed 5th percentile of 2019 to 2024), but the frontier, which scores 100, resets every quarter to that quarter's best country.",
+    "formula": "score = 100 × (x − floor) ÷ (this quarter's best − floor)",
+    "use": "Shows why a fixed floor alone is not enough: a moving top still moves everyone.",
+    "pros": ["Part of the scale is fixed"],
+    "cons": ["When the leader improves, everyone else falls further from 100", "The largest cross-country effect of any method in random shocks"]
+  },
+  "dea": {
+    "name": "Malmquist / DEA", "short": "Malmquist / DEA", "ruler": "moving", "verdict": "Not suitable", "tone": "bad",
+    "tagline": "Each country is scored against the best performers, with its own best weights.",
+    "how": "Yearly efficiency on the four IRI pillars. Each country gets the weights that make it look best, and its score is how close it comes to the frontier of best-performing countries. Change over time is a Malmquist index. It works with yearly data, so quarters in the same year share one value.",
+    "formula": "efficiency = highest score the country can reach, with its own weights, without any country exceeding 100",
+    "use": "Answers \"did this country improve, or did the leaders move?\" but is hard to explain and ignores the IRI weights.",
+    "pros": ["Separates catching up from the frontier moving", "Tolerates noise well"],
+    "cons": ["Ignores the IRI weights", "Many countries tie on the frontier", "Ranks shift by about 15 places on average", "Other countries still move"]
+  },
+  "pool": {
+    "name": "Pooled min-max", "short": "Pooled min-max", "ruler": "frozen", "verdict": "Only if frozen", "tone": "warn",
+    "tagline": "One lowest and highest value for all years, then frozen.",
+    "how": "Every country's value from every quarter of 2019 to 2024 is pooled. The lowest and highest become the 0 and 100 marks, and they are then frozen.",
+    "formula": "score = 100 × (x − lowest in 2019 to 2024) ÷ (highest in 2019 to 2024 − lowest in 2019 to 2024)",
+    "use": "Works only if its reference values are never recomputed.",
+    "pros": ["Familiar 0 to 100 scale", "Always credits a new record"],
+    "cons": ["Reference values come from a span of years, so revising that span moves everyone", "Adding a new quarter to the window rewrites every earlier score"]
+  },
+  "z": {
+    "name": "Base-year z-score", "short": "Base-year z-score", "ruler": "frozen", "verdict": "Adopt", "tone": "good",
+    "tagline": "Measures each country against where the average country stood in 2019.",
+    "how": "For each indicator, z is how many typical gaps (2019 standard deviations) a value sits from the 2019 average, flipped where lower is better. The z values are combined with the IRI weights and shown as 50 + 10z. A fixed cap of 3 to 5 stops any one indicator dominating.",
+    "formula": "z = (x − 2019 average) ÷ 2019 standard deviation;  shown as 50 + 10 × z",
+    "use": "The IRI's main method for tracking progress and comparing countries.",
+    "pros": ["No targets to agree", "Keeps the IRI weights", "Always credits progress", "Most stable year-on-year direction"],
+    "cons": ["The scale has no fixed limits, so it needs a fixed cap", "Changing the base year needs a new method version"],
+    "usedBy": "Similar to the base-year standardisation used by the Corruption Perceptions Index"
+  },
+  "dtf": {
+    "name": "Distance to frontier", "short": "Distance to frontier", "ruler": "frozen", "verdict": "Only if frozen", "tone": "warn",
+    "tagline": "How far a country is from the best value ever recorded.",
+    "how": "The frontier (100) is the best value recorded in 2019 to 2024, and the floor (0) is the trimmed 5th percentile. Both are frozen and scores are capped between 0 and 100.",
+    "formula": "score = 100 × (x − floor) ÷ (frontier − floor), capped at 0 and 100",
+    "use": "Works only if its reference values are never recomputed. Beyond the frontier, gains are not credited.",
+    "pros": ["Simple message: percent of the way to the best"],
+    "cons": ["Reference values come from a span of years", "A new record is never credited, because the top is 100", "Ties countries at the bottom on several indicators"],
+    "usedBy": "The idea behind the World Bank's Doing Business distance to frontier"
+  },
+  "fg": {
+    "name": "Fixed goalposts", "short": "Fixed goalposts", "ruler": "frozen", "verdict": "Alternative", "tone": "good",
+    "tagline": "A preset floor and target for every indicator.",
+    "how": "Each indicator has a floor (0) and a target (100) chosen in advance: natural bounds where they exist, otherwise the 2019 to 2024 record plus 10 percent headroom. Scores are capped between 0 and 100.",
+    "formula": "score = 100 × (x − floor) ÷ (target − floor), capped at 0 and 100",
+    "use": "The alternative if ISOC needs a bounded 0 to 100 scale.",
+    "pros": ["Familiar 0 to 100 scale", "Keeps the IRI weights", "Past scores never move"],
+    "cons": ["27 sets of targets to agree and defend", "Gains stop counting at the target", "Where goalposts are set too low, up to 24 countries tie"],
+    "usedBy": "The approach of the UNDP Human Development Index"
+  },
+  "dtt": {
+    "name": "Distance to target", "short": "Distance to target", "ruler": "frozen", "verdict": "Add-on view", "tone": "warn",
+    "tagline": "How far a country is from an ambitious policy target.",
+    "how": "Each indicator has a floor (the worst value recorded) and an ambitious target: the 90th percentile pushed a further 50 percent beyond. Scores are capped between 0 and 100.",
+    "formula": "score = 100 × (x − floor) ÷ (target − floor), capped at 0 and 100",
+    "use": "A useful extra view of progress toward goals, not the main score.",
+    "pros": ["Speaks the language of policy targets", "Few ties"],
+    "cons": ["Less stable year to year", "Progress stops counting at the target", "Targets must be chosen and defended"]
+  },
+  "ampi": {
+    "name": "AMPI", "short": "AMPI", "ruler": "frozen", "verdict": "Add-on view", "tone": "warn",
+    "tagline": "Rewards balanced progress and penalises uneven profiles.",
+    "how": "Indicators are rescaled so 100 is the 2019 average, then the score is the average M minus a penalty S²/M for how uneven the 27 indicators are. All indicators count equally.",
+    "formula": "AMPI = M − S² ÷ M, where M and S are the mean and spread of a country's 27 rescaled indicators",
+    "use": "An extra view of how balanced a country's progress is.",
+    "pros": ["Shows whether progress is broad or lopsided", "The narrowest rank bands", "No ties"],
+    "cons": ["Ignores the IRI weights", "The penalty can lower the score of a strong performer", "Not fully independent of other countries in Test 1"]
+  }
+}

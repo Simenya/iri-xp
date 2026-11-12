@@ -1,0 +1,50 @@
+{
+  "note": "Results of Tests 1 to 4 exactly as shown in the final validation presentation. Tests 1 and 2 come from the team's Test 1&2 report, Tests 3 and 4 from its Test 3&4 report (run 6 November 2026, 179 countries). The Monte Carlo results are computed by this project's pipeline.",
+  "order": ["cur", "dtf", "dea", "dtt", "pool", "ampi", "fg", "z"],
+  "test1": {
+    "title": "Test 1: Cross-country influence",
+    "short": "Cross-country influence",
+    "question": "If other countries' data change, does my score stay put?",
+    "how": "We changed the data of 142 countries from 2020 onward and rebuilt every method, including its reference values. Then we watched the 37 untouched countries. Bars show how far they moved, in typical gaps between countries.",
+    "takeaway": "Only the base-year z-score and fixed goalposts stay at exactly zero under both shocks. Methods that take their reference values from a span of years move when data inside that span change.",
+    "footnote": "Distance to frontier here is the method used in the Monte Carlo runs, with its reference values rebuilt from the changed data. Dynamic min-max and moving distance to frontier were not part of this test.",
+    "unit": "typical gaps between countries",
+    "broad": {"cur": 0.511, "dtf": 0.467, "dea": 0.383, "dtt": 0.330, "pool": 0.330, "ampi": 0.069, "fg": 0.0, "z": 0.0},
+    "leader": {"cur": 0.431, "dtf": 0.496, "dea": 0.096, "dtt": 0.536, "pool": 0.536, "ampi": 0.125, "fg": 0.0, "z": 0.0},
+    "labels": {"broad": "Broad shock: 0.5 SD, all 142 countries", "leader": "Leader shock: 1 SD, best country on each indicator"}
+  },
+  "test2": {
+    "title": "Test 2: Ranking deviation",
+    "short": "Ranking deviation",
+    "question": "Would users be surprised by the new ranking?",
+    "how": "Each method's ranking is compared with ISOC's published IRI in every quarter from 2019 to 2026. A rank correlation of 1 means the same order of countries. The 0.90 pass mark is the team's own threshold, not an ISOC rule.",
+    "takeaway": "Every method passes. Between the two finalists, the z-score moves fewer countries by more than 10 places than fixed goalposts do: 31 against 44.",
+    "footnote": "The current IRI row is the team's rebuild of ISOC's method, compared with the published numbers.",
+    "passMark": 0.90,
+    "corr": {"cur": 0.996, "dtf": 0.992, "dtt": 0.990, "pool": 0.990, "z": 0.986, "ampi": 0.985, "fg": 0.982, "dea": 0.941},
+    "bigMovers": {"cur": 0, "dtf": 24, "pool": 42, "dtt": 42, "z": 31, "ampi": 44, "fg": 44, "dea": 95}
+  },
+  "test3": {
+    "title": "Test 3: Historical revision",
+    "short": "Historical revision",
+    "question": "If old data are corrected, or a new quarter arrives, do published scores change?",
+    "how": "We made 18 corrections to individual countries' past data. Bars count the corrections that also moved other countries' scores. The right-hand column says whether adding a new quarter rewrites earlier scores.",
+    "takeaway": "Fixed goalposts, distance to frontier and distance to target kept all 18 corrections to the country concerned. Pooled min-max is the only method where a new quarter rewrites every earlier score, which is why reference values must stay frozen.",
+    "footnote": "Current IRI is the team's recreation of ISOC's production recipe. Source: test results run on 6 November 2026, 179 countries, default settings.",
+    "of": 18,
+    "moved": {"fg": 0, "dtf": 0, "dtt": 0, "pool": 3, "cur": 5, "z": 6, "ampi": 6, "dea": 10},
+    "rewrites": {"fg": false, "dtf": false, "dtt": false, "pool": true, "cur": false, "z": false, "ampi": false, "dea": false},
+    "result": {"fg": "works", "dtf": "works", "dtt": "works", "pool": "fails", "cur": "catch", "z": "catch", "ampi": "catch", "dea": "catch"}
+  },
+  "test4": {
+    "title": "Test 4: Ceiling and saturation",
+    "short": "Ceiling and ties",
+    "question": "Do different countries end up with the same score at a floor or a ceiling?",
+    "how": "In 2025 we looked for the largest group of countries with different data that received exactly the same score because the scale has a floor or a ceiling. Fewer ties keep the differences between countries visible.",
+    "takeaway": "The current IRI ties up to 33 different countries, mostly through its outlier caps. Pooled min-max, the z-score and AMPI have no fixed limits, so they tie none.",
+    "footnote": "Source: test results run on 6 November 2026, 2025 data, 179 countries. The z-score entry is for the uncapped score.",
+    "ties": {"cur": 33, "fg": 24, "dtf": 16, "dea": 8, "dtt": 4, "pool": 0, "z": 0, "ampi": 0},
+    "where": {"cur": "12 indicators (outlier caps)", "fg": "3 indicators (goalposts too low)", "dtf": "6 indicators, at the bottom", "dea": "overall score, at the top", "dtt": "1 indicator, at the top", "pool": "none", "z": "none (no limits)", "ampi": "none (no limits)"},
+    "result": {"cur": "fails", "fg": "catch", "dtf": "catch", "dea": "catch", "dtt": "works", "pool": "works", "z": "works", "ampi": "works"}
+  }
+}

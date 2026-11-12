@@ -1,0 +1,23 @@
+{
+ "3": {
+  "largestGroup": 28,
+  "indicator": "ipv6",
+  "side": "top",
+  "indicatorsAffected": 19,
+  "countriesAffected": 95
+ },
+ "4": {
+  "largestGroup": 17,
+  "indicator": "ipv6",
+  "side": "top",
+  "indicatorsAffected": 13,
+  "countriesAffected": 47
+ },
+ "5": {
+  "largestGroup": 5,
+  "indicator": "number_of_ixps",
+  "side": "top",
+  "indicatorsAffected": 10,
+  "countriesAffected": 21
+ }
+}
